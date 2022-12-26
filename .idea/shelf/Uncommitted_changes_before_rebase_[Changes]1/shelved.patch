@@ -1,0 +1,36 @@
+Index: rename.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import os\r\n\r\n\r\nimage_path = 'img/'\r\nimage_list = os.listdir(image_path)\r\n\r\ncount = 0\r\nfor picture_name in image_list:\r\n    src = os.path.join(image_path, picture_name)\r\n    dst = str(count).zfill(4) + '.jpg'\r\n    dst = os.path.join(image_path, dst)\r\n    os.rename(src, dst)\r\n    count += 1
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/rename.py b/rename.py
+--- a/rename.py	(revision 8321f5554be8df8cba55b7f791fe0315704b1417)
++++ b/rename.py	(date 1672032787724)
+@@ -1,6 +1,5 @@
+ import os
+ 
+-
+ image_path = 'img/'
+ image_list = os.listdir(image_path)
+ 
+Index: main.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import cv2\r\nimport os\r\n\r\ninput_path = 'viedo/'\r\noutput_path = 'img/'\r\nfile = 'img/0000.jpg'\r\nEXTRACTION = 10\r\n\r\ndef video2img(file_name):\r\n    cap = cv2.VideoCapture(file_name)\r\n    total_frame = cap.get(cv2.CAP_PROP_FRAME_COUNT)\r\n    print('총 프레임 수 :', total_frame)\r\n\r\n    ext_num = round(total_frame / EXTRACTION)\r\n    frame_cnt = 0\r\n\r\n    if not os.path.isfile(file):\r\n        file_cnt = 0\r\n    else:\r\n        file_cnt = int(os.listdir(output_path)[-1].split(\".\")[0]) + 1\r\n\r\n    while True:\r\n        key = cv2.waitKey(33)\r\n        if key == ord('q'):\r\n            break\r\n        ret, frame = cap.read()\r\n        if not ret:\r\n            break\r\n        cv2.imshow('video', frame)\r\n        if frame_cnt % ext_num == 0:\r\n            img_name = \"img/\" + str(file_cnt).zfill(4) + '.jpg'\r\n            cv2.imwrite(img_name, frame)\r\n            print('파일 생성 완료! :', img_name)\r\n            file_cnt += 1\r\n        frame_cnt += 1\r\n        if file_cnt == EXTRACTION:\r\n            break\r\n\r\n    cap.release()\r\n    cv2.destroyAllWindows()\r\n\r\nif __name__ == \"__main__\":\r\n    if not os.path.isdir(input_path):\r\n        os.makedirs(input_path)\r\n    if not os.path.isdir(output_path):\r\n        os.makedirs(output_path)\r\n\r\n    file_list = os.listdir(input_path) #경로 입력\r\n    for i in file_list:\r\n        video2img(input_path + i)\r\n\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/main.py b/main.py
+--- a/main.py	(revision 8321f5554be8df8cba55b7f791fe0315704b1417)
++++ b/main.py	(date 1672032787719)
+@@ -4,7 +4,7 @@
+ input_path = 'viedo/'
+ output_path = 'img/'
+ file = 'img/0000.jpg'
+-EXTRACTION = 10
++EXTRACTION = 100
+ 
+ def video2img(file_name):
+     cap = cv2.VideoCapture(file_name)
