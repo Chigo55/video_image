@@ -33,8 +33,6 @@ def video2img(file_name):
             print('파일 생성 완료! :', img_name)
             file_cnt += 1
         frame_cnt += 1
-        if file_cnt == EXTRACTION:
-            break
 
     cap.release()
     cv2.destroyAllWindows()
