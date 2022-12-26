@@ -3,7 +3,8 @@ import os
 
 input_path = 'viedo/'
 output_path = 'img/'
-EXTRACTION = 10
+file = 'img/0000.jpg'
+EXTRACTION = 100
 
 def video2img(file_name):
     cap = cv2.VideoCapture(file_name)
@@ -13,7 +14,10 @@ def video2img(file_name):
     ext_num = round(total_frame / EXTRACTION)
     frame_cnt = 0
 
-    file_cnt = int(os.listdir(output_path)[-1].split(".")[0]) + 1
+    if not os.path.isfile(file):
+        file_cnt = 0
+    else:
+        file_cnt = int(os.listdir(output_path)[-1].split(".")[0]) + 1
 
     while True:
         key = cv2.waitKey(33)
@@ -29,6 +33,8 @@ def video2img(file_name):
             print('파일 생성 완료! :', img_name)
             file_cnt += 1
         frame_cnt += 1
+        if file_cnt == EXTRACTION:
+            break
 
     cap.release()
     cv2.destroyAllWindows()
