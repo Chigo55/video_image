@@ -1,37 +1,42 @@
 import cv2
 import os
+import math
 
-input_path = 'viedo/'
+input_path = 'video/'
 output_path = 'img/'
 file = 'img/0000.jpg'
-EXTRACTION = 100
+EXTRACTION = 1000
 
 def video2img(file_name):
     cap = cv2.VideoCapture(file_name)
     total_frame = cap.get(cv2.CAP_PROP_FRAME_COUNT)
     print('총 프레임 수 :', total_frame)
 
-    ext_num = round(total_frame / EXTRACTION)
+    ext_num = math.trunc(total_frame / EXTRACTION)
     frame_cnt = 0
+    file_cnt = 0
 
-    if not os.path.isfile(file):
-        file_cnt = 0
-    else:
-        file_cnt = int(os.listdir(output_path)[-1].split(".")[0]) + 1
+    #     file_name_cnt = 0
+    file_name_cnt = int(os.listdir(output_path)[-1].split(".")[0]) + 1
 
     while True:
-        key = cv2.waitKey(33)
-        if key == ord('q'):
-            break
         ret, frame = cap.read()
         if not ret:
             break
-        cv2.imshow('video', frame)
+
         if frame_cnt % ext_num == 0:
-            img_name = "img/" + str(file_cnt).zfill(4) + '.jpg'
+            img_name = "img/" + str(file_name_cnt).zfill(4) + '.jpg'
             cv2.imwrite(img_name, frame)
             print('파일 생성 완료! :', img_name)
+            print("file_cnt :", file_cnt)
+            print("file_name_cnt :", file_name_cnt)
+            file_name_cnt += 1
             file_cnt += 1
+
+        if file_cnt == EXTRACTION:
+            file_cnt = 0
+            break
+
         frame_cnt += 1
 
     cap.release()
@@ -46,5 +51,3 @@ if __name__ == "__main__":
     file_list = os.listdir(input_path) #경로 입력
     for i in file_list:
         video2img(input_path + i)
-
-

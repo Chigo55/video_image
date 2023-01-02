@@ -3,7 +3,7 @@ import os
 image_path = 'img/'
 image_list = os.listdir(image_path)
 
-count = 0
+count = 10000
 
 for picture_name in image_list:
     src = os.path.join(image_path, picture_name)
